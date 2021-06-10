@@ -7,8 +7,6 @@ const jwt = require('jsonwebtoken');
 //On importe le package obfuscator-email pour masquer l'email des utilisateurs
 const obfuscatorEmail = require('obfuscator-email');
 
-const MaskData = require('maskdata');
-
 // import dotenv pour masquer les informations de connexion à la base de donées à l'aide de variable d'environnement 
 require('dotenv').config();
 
@@ -19,12 +17,7 @@ const User = require('../models/user');
 
 // création nouvel utilisateur (signin)
 exports.signup = (req, res, next)=>{
-    // mask email
-    const email = req.body.email;
-    const maskEmail = MaskData.maskEmail2( email);
-
-    //const maskEmail = obfuscatorEmail(req.body.email);
-
+    const maskEmail = obfuscatorEmail(req.body.email);
     bcrypt.hash(req.body.password, 10)
         .then(hash=>{
             const user = new User({
@@ -42,11 +35,7 @@ exports.signup = (req, res, next)=>{
 
 // login
 exports.login = (req, res, next)=>{
-    const email = req.body.email;
-    const maskEmail = maskData.maskEmail2( email);
-
-    //const maskEmail = obfuscatorEmail(req.body.email);
-
+    const maskEmail = obfuscatorEmail(req.body.email);
     User.findOne({ email: maskEmail})
         .then(user =>{
             if(!user){
@@ -64,10 +53,10 @@ exports.login = (req, res, next)=>{
                             process.env.JWT_SECRET,
                             { expiresIn: '24h' }
                         ),
-                        email: maskEmail
                     });
                 })
                 .catch(error => res.status(500).json({error}));
         })
         .catch(error => res.status(500).json({error}));
 };
+
