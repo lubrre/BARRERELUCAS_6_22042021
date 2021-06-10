@@ -1,3 +1,5 @@
 frontend => ng serve
 
-backend => npm run start watch
+backend => nodemon server.js
+
+go to http://localhost:4200/ 
