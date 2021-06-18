@@ -4,8 +4,9 @@ const bcrypt = require('bcrypt');
 // import jwt pour attribuer un token à un utilisateur au moment ou il se connecte
 const jwt = require('jsonwebtoken');
 
-//On importe le package obfuscator-email pour masquer l'email des utilisateurs
-const obfuscatorEmail = require('obfuscator-email');
+const MaskData = require("maskdata");
+
+
 
 // import dotenv pour masquer les informations de connexion à la base de donées à l'aide de variable d'environnement 
 require('dotenv').config();
@@ -15,14 +16,12 @@ const User = require('../models/user');
 
 
 
-// création nouvel utilisateur (signin)
+// création nouvel utilisateur (signup)
 exports.signup = (req, res, next)=>{
-    const maskEmail = obfuscatorEmail(req.body.email);
     bcrypt.hash(req.body.password, 10)
         .then(hash=>{
             const user = new User({
-                email: maskEmail,
-                // email: req.body.email,
+                email: MaskData.maskEmail2(req.body.email),
                 password: hash
             });
             
@@ -35,8 +34,7 @@ exports.signup = (req, res, next)=>{
 
 // login
 exports.login = (req, res, next)=>{
-    const maskEmail = obfuscatorEmail(req.body.email);
-    User.findOne({ email: maskEmail})
+    User.findOne({ email: MaskData.maskEmail2(req.body.email)})
         .then(user =>{
             if(!user){
                 return res.status(401).json({ error: 'Utilisateur non trouvé ! '});
