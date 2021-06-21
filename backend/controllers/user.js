@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken');
 const MaskData = require("maskdata");
 
 
-
 // import dotenv pour masquer les informations de connexion à la base de donées à l'aide de variable d'environnement 
 require('dotenv').config();
 
