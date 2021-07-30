@@ -14,3 +14,7 @@ Rendez-vous sur http://localhost:4200/
 
 Faire tourner le Backend
 Ouvrir le terminal sur ce dossier. Pour utiliser le serveur, chargez le package nodemon : npm install -g nodemon. Puis lancez le serveur: nodemon server.
+
+_________________________________________________________________________
+
+Je vous fais parvenir le fichier .env à part.
